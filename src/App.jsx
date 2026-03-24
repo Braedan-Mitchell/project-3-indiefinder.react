@@ -6,18 +6,10 @@ import './components/BackgroundOrbs.css'
 import './components/RouteTransitionOverlay.css'
 import BackgroundOrbs from './components/BackgroundOrbs'
 import RouteTransitionOverlay from './components/RouteTransitionOverlay'
-import Carousel from './components/Carousel'
+import Home from './pages/Home'
 import Games from './pages/Games'
 import About from './pages/About'
 import Contact from './pages/Contact'
-import { allGames, getRandomGames, getNewestGames, getPopularGames, getCheapestGames } from './utils/gameData'
-
-const carouselRows = [
-  { title: 'Featured Finds', games: getRandomGames(allGames, 6) },
-  { title: 'Newer Games', games: getNewestGames(allGames, 6) },
-  { title: 'Popular Games', games: getPopularGames(allGames, 6) },
-  { title: 'Cheaper Games', games: getCheapestGames(allGames, 6) },
-]
 
 function Navbar({ onNavigateWithTransition, isTransitioning }) {
   const handleNavigation = (event, path) => {
@@ -43,40 +35,6 @@ function Navbar({ onNavigateWithTransition, isTransitioning }) {
         </div>
       </div>
     </nav>
-  )
-}
-
-function CuratedDiscoveriesBox() {
-  return (
-    <section className="page-hero">
-      <div className="page-hero__content">
-        <p className="page-hero__eyebrow">Curated Indie Discoveries</p>
-        <h1 className="page-hero__title">
-          Find the next game
-          <span className="page-hero__accent"> worth obsessing over.</span>
-        </h1>
-        <p className="page-hero__description">
-          Indiefinder highlights smaller studios, stranger ideas, and the kinds
-          of games that usually get buried under larger releases.
-        </p>
-      </div>
-    </section>
-  )
-}
-
-
-function Home() {
-  return (
-    <>
-      <CuratedDiscoveriesBox />
-
-      {carouselRows.map(row => (
-        <section key={row.title} style={{ padding: '1.5rem 0' }}>
-          <h2 style={{ padding: '0 2.25rem', marginBottom: '0.75rem' }}>{row.title}</h2>
-          <Carousel games={row.games} />
-        </section>
-      ))}
-    </>
   )
 }
 
