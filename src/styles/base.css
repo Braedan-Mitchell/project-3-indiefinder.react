@@ -3,8 +3,11 @@
 :root {
   --bg: #ffffff;
   --bg-soft: #fafaf9;
+  --panel: rgba(255, 255, 255, 0.95);
+  --panel-strong: #ffffff;
   --ink: #333333;
   --muted: #666666;
+  --line: rgba(51, 51, 51, 0.08);
   --brand: #d8c7ff;
   --brand-strong: #c8b6ff;
   --accent: #9d7dd6;
@@ -12,6 +15,10 @@
   --gold: #a78bd8;
   --danger: #d64545;
   --success: #52b788;
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
 }
 
 * {
@@ -20,20 +27,104 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   min-width: 320px;
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   color: var(--ink);
   background: var(--bg-soft);
-  padding: 2rem;
 }
 
 h1, h2, h3, h4 {
+  font-family: 'Poppins', sans-serif;
   font-weight: 800;
   letter-spacing: -0.03em;
 }
 
+button, input, select, textarea {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
 #root {
   min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+}
+
+.page-shell {
+  width: min(1120px, calc(100% - 4.5rem));
+  margin: 0 auto;
+  padding: 1.25rem 0 4rem;
+}
+
+.page-stack {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.site-footer {
+  width: min(1120px, calc(100% - 4.5rem));
+  margin: 0 auto 2rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(216, 199, 255, 0.2);
+  border-radius: var(--radius-md);
+  background: rgba(245, 240, 255, 0.4);
+  color: var(--muted);
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+
+.site-footer a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-link {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-heading h2 {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+}
+
+.section-heading p {
+  color: var(--muted);
+  max-width: 46ch;
+}
+
+@media (max-width: 768px) {
+  .page-shell {
+    width: min(100% - 1.8rem, 1120px);
+    padding-top: 0.8rem;
+  }
+
+  .site-footer {
+    width: min(100% - 1.8rem, 1120px);
+    margin-bottom: 1rem;
+  }
 }

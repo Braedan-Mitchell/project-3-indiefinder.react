@@ -19,32 +19,36 @@ const placeholderRows = [
 
 function Navbar() {
   return (
-    <nav>
-      <div>
-        <span style={{ fontSize: '1.2em', fontWeight: 'bold' }}>INDIEFINDER</span>
+    <nav className="site-nav">
+      <div className="site-nav__inner">
+        <NavLink className="site-nav__brand" to="/" end>
+          <span className="site-nav__brand-wordmark">INDIEFINDER</span>
+        </NavLink>
+        <div className="site-nav__links">
+          <NavLink className="site-nav__link" to="/" end>Home</NavLink>
+          <NavLink className="site-nav__link" to="/games">Games</NavLink>
+          <NavLink className="site-nav__link" to="/about">About</NavLink>
+          <NavLink className="site-nav__link" to="/contact">Contact</NavLink>
+        </div>
       </div>
-      <ul style={{ listStyle: 'none', display: 'flex', gap: '1rem' }}>
-        <li><Link to="/" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Home</Link></li>
-        <li><Link to="/games" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Games</Link></li>
-        <li><Link to="/about" style={{ color: 'var(--accent)', textDecoration: 'none' }}>About</Link></li>
-        <li><Link to="/contact" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Contact</Link></li>
-      </ul>
     </nav>
   )
 }
 
 function CuratedDiscoveriesBox() {
   return (
-    <section>
-      <p>Curated Indie Discoveries</p>
-      <h1>
-        Find the next game
-        <span style={{ color: 'var(--accent)' }}> worth obsessing over.</span>
-      </h1>
-      <p>
-        Indiefinder highlights smaller studios, stranger ideas, and the kinds
-        of games that usually get buried under larger releases.
-      </p>
+    <section className="page-hero">
+      <div className="page-hero__content">
+        <p className="page-hero__eyebrow">Curated Indie Discoveries</p>
+        <h1 className="page-hero__title">
+          Find the next game
+          <span className="page-hero__accent"> worth obsessing over.</span>
+        </h1>
+        <p className="page-hero__description">
+          Indiefinder highlights smaller studios, stranger ideas, and the kinds
+          of games that usually get buried under larger releases.
+        </p>
+      </div>
     </section>
   )
 }
@@ -65,7 +69,9 @@ function PlaceholderCarousel({ title, items }) {
   )
 }
 
-import { Route, Routes, Link } from 'react-router-dom'
+import { Route, Routes, NavLink } from 'react-router-dom'
+import './styles/base.css'
+import './components/Navbar.css'
 import Games from './pages/Games'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -84,14 +90,16 @@ function Home() {
 
 function App() {
   return (
-    <div>
+    <div className="app-shell">
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/games" element={<Games />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
+      <main className="page-shell">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </main>
     </div>
   )
 }
