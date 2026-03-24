@@ -20,12 +20,14 @@ const placeholderRows = [
 function Navbar() {
   return (
     <nav>
-      <p>TEMP LOGO</p>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/games">Games</Link></li>
-        <li><Link to="/about">About</Link></li>
-        <li><Link to="/contact">Contact</Link></li>
+      <div>
+        <span style={{ fontSize: '1.2em', fontWeight: 'bold' }}>INDIEFINDER</span>
+      </div>
+      <ul style={{ listStyle: 'none', display: 'flex', gap: '1rem' }}>
+        <li><Link to="/" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Home</Link></li>
+        <li><Link to="/games" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Games</Link></li>
+        <li><Link to="/about" style={{ color: 'var(--accent)', textDecoration: 'none' }}>About</Link></li>
+        <li><Link to="/contact" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Contact</Link></li>
       </ul>
     </nav>
   )
@@ -37,7 +39,7 @@ function CuratedDiscoveriesBox() {
       <p>Curated Indie Discoveries</p>
       <h1>
         Find the next game
-        <span> worth obsessing over.</span>
+        <span style={{ color: 'var(--accent)' }}> worth obsessing over.</span>
       </h1>
       <p>
         Indiefinder highlights smaller studios, stranger ideas, and the kinds
