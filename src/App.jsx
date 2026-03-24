@@ -6,27 +6,17 @@ import './components/BackgroundOrbs.css'
 import './components/RouteTransitionOverlay.css'
 import BackgroundOrbs from './components/BackgroundOrbs'
 import RouteTransitionOverlay from './components/RouteTransitionOverlay'
+import Carousel from './components/Carousel'
 import Games from './pages/Games'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import { allGames, getRandomGames, getNewestGames, getPopularGames, getCheapestGames } from './utils/gameData'
 
-const placeholderRows = [
-  {
-    title: 'Featured Finds',
-    items: ['Placeholder Game 1', 'Placeholder Game 2', 'Placeholder Game 3'],
-  },
-  {
-    title: 'Newer Games',
-    items: ['Placeholder Game 1', 'Placeholder Game 2', 'Placeholder Game 3'],
-  },
-  {
-    title: 'Popular Games',
-    items: ['Placeholder Game 1', 'Placeholder Game 2', 'Placeholder Game 3'],
-  },
-  {
-    title: 'Cheaper Games',
-    items: ['Placeholder Game 1', 'Placeholder Game 2', 'Placeholder Game 3'],
-  },
+const carouselRows = [
+  { title: 'Featured Finds', games: getRandomGames(allGames, 6) },
+  { title: 'Newer Games', games: getNewestGames(allGames, 6) },
+  { title: 'Popular Games', games: getPopularGames(allGames, 6) },
+  { title: 'Cheaper Games', games: getCheapestGames(allGames, 6) },
 ]
 
 function Navbar({ onNavigateWithTransition, isTransitioning }) {
@@ -74,29 +64,17 @@ function CuratedDiscoveriesBox() {
   )
 }
 
-function PlaceholderCarousel({ title, items }) {
-  return (
-    <section>
-      <h2>{title}</h2>
-      <div>
-        {items.map(item => (
-          <article key={`${title}-${item}`}>
-            <h3>{item}</h3>
-            <p>Temporary card content</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  )
-}
 
 function Home() {
   return (
     <>
       <CuratedDiscoveriesBox />
 
-      {placeholderRows.map(row => (
-        <PlaceholderCarousel key={row.title} title={row.title} items={row.items} />
+      {carouselRows.map(row => (
+        <section key={row.title} style={{ padding: '1.5rem 0' }}>
+          <h2 style={{ padding: '0 2.25rem', marginBottom: '0.75rem' }}>{row.title}</h2>
+          <Carousel games={row.games} />
+        </section>
       ))}
     </>
   )

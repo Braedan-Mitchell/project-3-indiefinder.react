@@ -1,6 +1,12 @@
 import PageHero from '../components/PageHero'
+import GameCard from '../components/GameCard'
+import useGameFilters from '../hooks/useGameFilters'
+import { allGames, genreOptions, sortOptions } from '../utils/gameData'
+import './Games.css'
 
 function Games() {
+  const { filters, consoles, filteredGames, updateFilter, resetFilters } = useGameFilters(allGames)
+
   return (
     <main>
       <PageHero
@@ -9,7 +15,104 @@ function Games() {
         accent="without the noise."
         description="Use filters to cut straight to the kind of project you want, whether that means cheap, recent, highly rated, or platform-specific."
       />
-      <h1>Games</h1>
+
+      <div className="page-shell">
+        <div className="games-toolbar">
+          <div className="games-toolbar__grid">
+            <div className="games-toolbar__field">
+              <label htmlFor="search">Search</label>
+              <input
+                id="search"
+                type="text"
+                placeholder="Game title..."
+                value={filters.search}
+                onChange={e => updateFilter('search', e.target.value)}
+              />
+            </div>
+
+            <div className="games-toolbar__field">
+              <label htmlFor="genre">Genre</label>
+              <select
+                id="genre"
+                value={filters.genre}
+                onChange={e => updateFilter('genre', e.target.value)}
+              >
+                {genreOptions.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="games-toolbar__field">
+              <label htmlFor="console">Platform</label>
+              <select
+                id="console"
+                value={filters.selectedConsole}
+                onChange={e => updateFilter('selectedConsole', e.target.value)}
+              >
+                <option value="">All Platforms</option>
+                {consoles.map(c => (
+                  <option key={c} value={c.toLowerCase()}>{c}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="games-toolbar__field">
+              <label htmlFor="sort">Sort By</label>
+              <select
+                id="sort"
+                value={filters.sort}
+                onChange={e => updateFilter('sort', e.target.value)}
+              >
+                {sortOptions.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="games-toolbar__field">
+              <label htmlFor="maxPrice">Max Price: ${filters.maxPrice}</label>
+              <input
+                id="maxPrice"
+                type="range"
+                min={0}
+                max={50}
+                step={1}
+                value={filters.maxPrice}
+                onChange={e => updateFilter('maxPrice', Number(e.target.value))}
+              />
+            </div>
+
+            <div className="games-toolbar__field">
+              <label htmlFor="minRating">Min Rating: {filters.minRating}</label>
+              <input
+                id="minRating"
+                type="range"
+                min={1}
+                max={10}
+                step={0.5}
+                value={filters.minRating}
+                onChange={e => updateFilter('minRating', Number(e.target.value))}
+              />
+            </div>
+          </div>
+
+          <div className="games-toolbar__footer">
+            <span className="games-toolbar__summary">
+              Showing {filteredGames.length} of {allGames.length} games
+            </span>
+            <button className="games-toolbar__button" onClick={resetFilters}>
+              Reset Filters
+            </button>
+          </div>
+        </div>
+
+        <div className="games-grid">
+          {filteredGames.map(game => (
+            <GameCard key={game.id} game={game} />
+          ))}
+        </div>
+      </div>
     </main>
   )
 }
