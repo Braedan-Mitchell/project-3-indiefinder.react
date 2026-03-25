@@ -8,7 +8,7 @@ import {
   getNewestGames,
   getPopularGames,
   getRandomGames,
-} from '../utils/gameData'
+} from '../../../server/utils/gameData'
 import './Home.css'
 
 function Home() {

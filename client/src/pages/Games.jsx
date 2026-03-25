@@ -1,7 +1,7 @@
 import PageHero from '../components/PageHero'
 import GameCard from '../components/GameCard'
 import useGameFilters from '../hooks/useGameFilters'
-import { allGames, genreOptions, sortOptions } from '../utils/gameData'
+import { allGames, genreOptions, sortOptions } from '../../../server/utils/gameData'
 import './Games.css'
 
 function Games() {
