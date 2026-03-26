@@ -30,6 +30,12 @@ export function validateContactForm(values) {
 export function validateRecommendationForm(values) {
   const errors = {}
 
+  if (!values.recommenderName) {
+    errors.recommenderName = 'Please enter your name.'
+  } else if (!nameRegex.test(values.recommenderName)) {
+    errors.recommenderName = 'Name may contain only letters.'
+  }
+
   if (!values.gameTitle) {
     errors.gameTitle = 'Please enter the game title.'
   }

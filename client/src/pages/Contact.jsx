@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PageHero from '../components/PageHero'
 import { validateContactForm, validateRecommendationForm } from '../utils/contactValidation'
+import { createRecommendation, formatRecommendationReviewLog } from '../services/apiClient'
 import './Contact.css'
 
 function Contact() {
@@ -8,9 +9,12 @@ function Contact() {
   const [contactErrors, setContactErrors] = useState({})
   const [contactSuccess, setContactSuccess] = useState(false)
 
-  const [recommendForm, setRecommendForm] = useState({ gameTitle: '', gameDesc: '', foundOn: '' })
+  const [recommendForm, setRecommendForm] = useState({ recommenderName: '', gameTitle: '', gameDesc: '', foundOn: '' })
   const [recommendErrors, setRecommendErrors] = useState({})
   const [recommendSuccess, setRecommendSuccess] = useState(false)
+  const [recommendApiError, setRecommendApiError] = useState('')
+  const [isSubmittingRecommendation, setIsSubmittingRecommendation] = useState(false)
+  const [recommendationLogs, setRecommendationLogs] = useState([])
 
   const handleContactChange = (e) => {
     const { name, value } = e.target
@@ -41,14 +45,29 @@ function Contact() {
     }
   }
 
-  const handleRecommendSubmit = (e) => {
+  const handleRecommendSubmit = async (e) => {
     e.preventDefault()
     const errors = validateRecommendationForm(recommendForm)
     
     if (Object.keys(errors).length === 0) {
-      setRecommendSuccess(true)
-      setRecommendForm({ gameTitle: '', gameDesc: '', foundOn: '' })
-      setTimeout(() => setRecommendSuccess(false), 3000)
+      try {
+        setRecommendApiError('')
+        setIsSubmittingRecommendation(true)
+
+        const createdRecommendation = await createRecommendation(recommendForm)
+
+        setRecommendationLogs((prev) => [
+          formatRecommendationReviewLog(createdRecommendation),
+          ...prev,
+        ])
+        setRecommendSuccess(true)
+        setRecommendForm({ recommenderName: '', gameTitle: '', gameDesc: '', foundOn: '' })
+        setTimeout(() => setRecommendSuccess(false), 3000)
+      } catch {
+        setRecommendApiError('Could not submit recommendation right now. Please try again.')
+      } finally {
+        setIsSubmittingRecommendation(false)
+      }
     } else {
       setRecommendErrors(errors)
     }
@@ -133,6 +152,19 @@ function Contact() {
             
             <form className="contact-form" onSubmit={handleRecommendSubmit}>
               <div className="contact-form__field">
+                <label htmlFor="recommenderName">Your Name</label>
+                <input
+                  id="recommenderName"
+                  type="text"
+                  name="recommenderName"
+                  value={recommendForm.recommenderName}
+                  onChange={handleRecommendChange}
+                  placeholder="Enter your name"
+                />
+                {recommendErrors.recommenderName && <span className="form-error">{recommendErrors.recommenderName}</span>}
+              </div>
+
+              <div className="contact-form__field">
                 <label htmlFor="gameTitle">Game Title</label>
                 <input
                   id="gameTitle"
@@ -176,9 +208,25 @@ function Contact() {
                 {recommendErrors.foundOn && <span className="form-error">{recommendErrors.foundOn}</span>}
               </div>
 
-              <button type="submit" className="contact-form__button">Recommend Game</button>
+              <button type="submit" className="contact-form__button" disabled={isSubmittingRecommendation}>
+                {isSubmittingRecommendation ? 'Submitting...' : 'Recommend Game'}
+              </button>
               {recommendSuccess && <div className="form-success">✓ Thanks for the recommendation!</div>}
+              {recommendApiError && <div className="form-error">{recommendApiError}</div>}
             </form>
+
+            {recommendationLogs.length > 0 && (
+              <div className="recommendation-log" aria-live="polite">
+                <h3 className="recommendation-log__title">Review Queue</h3>
+                <ul className="recommendation-log__list">
+                  {recommendationLogs.map((logEntry, index) => (
+                    <li key={`${logEntry}-${index}`} className="recommendation-log__item">
+                      {logEntry}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
