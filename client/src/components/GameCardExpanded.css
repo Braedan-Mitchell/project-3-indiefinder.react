@@ -33,6 +33,19 @@
     border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.gcx-panel[data-motion-mode='reduced'] {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.gcx-panel[data-motion-mode='reduced'] .gcx-inner--visible {
+  opacity: 1;
+}
+
+.gcx-panel[data-motion-mode='reduced'].gcx-panel--visible {
+  opacity: 1;
+}
+
 /* ─── Inner content ──────────────────────────────────────────── */
 /* On closing (class removed): fast fade-out, no delay */
 .gcx-inner {
@@ -47,6 +60,10 @@
 .gcx-inner--visible {
   opacity: 1;
   transition: opacity 0.25s ease 0.3s;
+}
+
+.gcx-inner--reduced.gcx-inner--visible {
+  transition: opacity 0.22s ease;
 }
 
 /* ─── Sticky header ──────────────────────────────────────────── */

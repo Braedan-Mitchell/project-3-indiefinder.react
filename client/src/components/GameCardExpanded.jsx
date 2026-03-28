@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { formatPrice } from '../utils/formatters'
+import { useUiSettings } from '../context/UiSettingsContext'
 import './GameCardExpanded.css'
 
 function GameCardExpanded({ game, sourceRect, onClose }) {
@@ -8,6 +9,7 @@ function GameCardExpanded({ game, sourceRect, onClose }) {
   // 'open'     → transitions applied, panel is fullscreen, content visible
   // 'closing'  → transitions applied, panel returns to card rect
   const [phase, setPhase] = useState('entering')
+  const { isMotionSicknessMode } = useUiSettings()
 
   // Trigger expansion after the first paint so the starting position renders without animation
   useEffect(() => {
@@ -38,21 +40,31 @@ function GameCardExpanded({ game, sourceRect, onClose }) {
   // Fallback in case transitionend doesn't fire
   useEffect(() => {
     if (phase !== 'closing') return
-    const fallback = setTimeout(onClose, 600)
+    const fallback = setTimeout(onClose, isMotionSicknessMode ? 260 : 600)
     return () => clearTimeout(fallback)
-  }, [phase, onClose])
+  }, [phase, onClose, isMotionSicknessMode])
 
   const handleTransitionEnd = (e) => {
-    if (phase === 'closing' && e.propertyName === 'width') {
+    const closeProperty = isMotionSicknessMode ? 'opacity' : 'width'
+
+    if (phase === 'closing' && e.propertyName === closeProperty) {
       onClose()
     }
   }
 
   const isOpen = phase === 'open'
-  const hasTransition = phase !== 'entering'
+  const hasTransition = !isMotionSicknessMode && phase !== 'entering'
   const edgeMargin = window.innerWidth <= 700 ? 10 : 18
 
-  const panelStyle = isOpen
+  const panelStyle = isMotionSicknessMode
+    ? {
+        top: edgeMargin,
+        left: edgeMargin,
+        width: `calc(100vw - ${edgeMargin * 2}px)`,
+        height: `calc(100vh - ${edgeMargin * 2}px)`,
+        borderRadius: '22px',
+      }
+    : isOpen
     ? {
         top: edgeMargin,
         left: edgeMargin,
@@ -74,12 +86,13 @@ function GameCardExpanded({ game, sourceRect, onClose }) {
       onClick={close}
     >
       <div
-        className={`gcx-panel${hasTransition ? ' gcx-panel--transition' : ''}`}
+        className={`gcx-panel${hasTransition ? ' gcx-panel--transition' : ''}${isOpen ? ' gcx-panel--visible' : ''}`}
+        data-motion-mode={isMotionSicknessMode ? 'reduced' : 'default'}
         style={panelStyle}
         onClick={e => e.stopPropagation()}
         onTransitionEnd={handleTransitionEnd}
       >
-        <div className={`gcx-inner${isOpen ? ' gcx-inner--visible' : ''}`}>
+        <div className={`gcx-inner${isOpen ? ' gcx-inner--visible' : ''}${isMotionSicknessMode ? ' gcx-inner--reduced' : ''}`}>
           <div className="gcx-header">
             <button className="gcx-back" onClick={close}>← Back</button>
           </div>

@@ -300,3 +300,70 @@
     animation-duration: 740ms;
   }
 }
+
+:root.motion-sickness .route-transition__sheet {
+  left: 0;
+  width: 100vw;
+  opacity: 0;
+}
+
+:root.motion-sickness .route-transition__status {
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+:root.motion-sickness .route-transition__orb {
+  animation: none;
+}
+
+:root.motion-sickness .route-transition--cover .route-transition__sheet {
+  animation: transition-fade-cover 260ms ease forwards;
+}
+
+:root.motion-sickness .route-transition--hold .route-transition__sheet {
+  opacity: 1;
+}
+
+:root.motion-sickness .route-transition--reveal .route-transition__sheet {
+  animation: transition-fade-reveal 260ms ease forwards;
+}
+
+:root.motion-sickness .route-transition--cover .route-transition__status,
+:root.motion-sickness .route-transition--hold .route-transition__status {
+  opacity: 1;
+  animation: none;
+}
+
+:root.motion-sickness .route-transition--reveal .route-transition__status {
+  animation: transition-fade-reveal-status 260ms ease forwards;
+}
+
+@keyframes transition-fade-cover {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes transition-fade-reveal {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes transition-fade-reveal-status {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

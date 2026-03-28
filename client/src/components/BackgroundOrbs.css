@@ -33,6 +33,10 @@
   animation: float-medium ease-in-out infinite;
 }
 
+:root.motion-sickness .background-orbs__orb {
+  animation: none;
+}
+
 @keyframes float-slow {
   0%, 100% {
     transform: translate(-50%, -50%);

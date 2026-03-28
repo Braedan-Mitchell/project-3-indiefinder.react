@@ -159,6 +159,15 @@
   background: rgba(216, 199, 255, 0.1);
 }
 
+.site-nav__setting-stack {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.85rem;
+  padding: 0.85rem 0.8rem;
+  border-radius: var(--radius-sm);
+  background: rgba(216, 199, 255, 0.1);
+}
+
 .site-nav__setting-title {
   margin: 0;
   font-size: 0.95rem;
@@ -201,6 +210,35 @@
 
 .site-nav__switch.is-on .site-nav__switch-thumb {
   transform: translateX(1.15rem);
+}
+
+.site-nav__font-size-row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.site-nav__font-step {
+  min-height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(216, 199, 255, 0.55);
+  background: rgba(var(--tone-white-rgb), 0.88);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 180ms ease;
+}
+
+.site-nav__font-step:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.site-nav__font-step.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--tone-white);
 }
 
 .site-nav__links {

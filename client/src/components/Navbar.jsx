@@ -1,11 +1,21 @@
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { useUiSettings } from '../context/UiSettingsContext'
 import './Navbar.css'
+
+const FONT_SIZE_STEPS = [-3, -2, -1, 0, 1, 2, 3]
 
 function Navbar({ isTransitioning, onNavigateWithTransition }) {
   const [isOpen, setIsOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('indiefind-theme') === 'dark')
+  const {
+    isDarkMode,
+    setIsDarkMode,
+    isMotionSicknessMode,
+    setIsMotionSicknessMode,
+    fontSizeStep,
+    setFontSizeStep,
+  } = useUiSettings()
 
   const closeMenu = () => setIsOpen(false)
   const closeSettings = () => setIsSettingsOpen(false)
@@ -17,13 +27,6 @@ function Navbar({ isTransitioning, onNavigateWithTransition }) {
       document.body.style.overflow = ''
     }
   }, [isSettingsOpen])
-
-  useEffect(() => {
-    const rootElement = document.documentElement
-    rootElement.classList.toggle('theme-dark', isDarkMode)
-    document.body.classList.remove('theme-dark')
-    localStorage.setItem('indiefind-theme', isDarkMode ? 'dark' : 'light')
-  }, [isDarkMode])
 
   const handleNavigation = (event, path) => {
     if (isTransitioning) {
@@ -122,6 +125,41 @@ function Navbar({ isTransitioning, onNavigateWithTransition }) {
           >
             <span className="site-nav__switch-thumb" />
           </button>
+        </div>
+
+        <div className="site-nav__setting-row">
+          <div>
+            <p className="site-nav__setting-title">Motion Sickness Mode</p>
+          </div>
+          <button
+            type="button"
+            className={`site-nav__switch ${isMotionSicknessMode ? 'is-on' : ''}`}
+            role="switch"
+            aria-checked={isMotionSicknessMode}
+            aria-label="Toggle motion sickness mode"
+            onClick={() => setIsMotionSicknessMode(previousState => !previousState)}
+          >
+            <span className="site-nav__switch-thumb" />
+          </button>
+        </div>
+
+        <div className="site-nav__setting-stack">
+          <p className="site-nav__setting-title">Font Size</p>
+          <div className="site-nav__font-size-row" role="radiogroup" aria-label="Font size">
+            {FONT_SIZE_STEPS.map(step => (
+              <button
+                key={step}
+                type="button"
+                className={`site-nav__font-step ${fontSizeStep === step ? 'is-active' : ''}`}
+                role="radio"
+                aria-checked={fontSizeStep === step}
+                aria-label={`Font size ${step > 0 ? `plus ${step}` : step < 0 ? `minus ${Math.abs(step)}` : 'default'}`}
+                onClick={() => setFontSizeStep(step)}
+              >
+                {step > 0 ? `+${step}` : step}
+              </button>
+            ))}
+          </div>
         </div>
       </aside>
     </>

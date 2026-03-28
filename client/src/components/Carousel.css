@@ -12,6 +12,23 @@
   transition: transform 280ms ease;
 }
 
+.carousel--reduced .carousel__track {
+  transition: none;
+}
+
+.carousel__fade-stage {
+  opacity: 1;
+  transition: opacity 170ms ease;
+}
+
+.carousel__fade-stage--out {
+  opacity: 0;
+}
+
+.carousel__fade-stage--in {
+  opacity: 1;
+}
+
 .carousel__slide {
   flex: 0 0 100%;
   display: grid;
