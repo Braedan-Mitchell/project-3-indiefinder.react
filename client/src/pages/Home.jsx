@@ -11,12 +11,19 @@ import {
 } from '../utils/gameData'
 import './Home.css'
 
-function StatusCarousel({ games, statusMessage }) {
+const CAROUSEL_FIELDS = {
+  featured: new Set(),
+  newer: new Set(['date']),
+  popular: new Set(['rating']),
+  cheaper: new Set(['price']),
+}
+
+function StatusCarousel({ games, statusMessage, activeFields }) {
   if (statusMessage) {
     return <p>{statusMessage}</p>
   }
 
-  return <Carousel games={games} />
+  return <Carousel games={games} activeFields={activeFields} />
 }
 
 function Home() {
@@ -65,7 +72,7 @@ function Home() {
             <p>Hand-picked from the catalog to give the homepage a different pulse every time.</p>
           </div>
         </div>
-        <StatusCarousel games={featured} statusMessage={statusMessage} />
+        <StatusCarousel games={featured} statusMessage={statusMessage} activeFields={CAROUSEL_FIELDS.featured} />
       </section>
 
       <section className="home-rail">
@@ -81,21 +88,21 @@ function Home() {
             <div className="section-heading">
               <h2>Newer Games</h2>
             </div>
-            <StatusCarousel games={newer} statusMessage={statusMessage} />
+            <StatusCarousel games={newer} statusMessage={statusMessage} activeFields={CAROUSEL_FIELDS.newer} />
           </div>
 
           <div>
             <div className="section-heading">
               <h2>Popular Games</h2>
             </div>
-            <StatusCarousel games={popular} statusMessage={statusMessage} />
+            <StatusCarousel games={popular} statusMessage={statusMessage} activeFields={CAROUSEL_FIELDS.popular} />
           </div>
 
           <div>
             <div className="section-heading">
               <h2>Cheaper Games</h2>
             </div>
-            <StatusCarousel games={cheaper} statusMessage={statusMessage} />
+            <StatusCarousel games={cheaper} statusMessage={statusMessage} activeFields={CAROUSEL_FIELDS.cheaper} />
           </div>
         </div>
       </section>

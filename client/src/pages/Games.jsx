@@ -1,7 +1,9 @@
 import { useMemo } from 'react'
 import PageHero from '../components/PageHero'
 import GameCard from '../components/GameCard'
+import GameCardExpanded from '../components/GameCardExpanded'
 import { useAppData } from '../context/AppDataContext'
+import useExpandedGameOverlay from '../hooks/useExpandedGameOverlay'
 import useGameFilters from '../hooks/useGameFilters'
 import { genreOptions, sortOptions, initialGameFilters } from '../utils/gameData'
 import './Games.css'
@@ -9,6 +11,7 @@ import './Games.css'
 function Games() {
   const { games, gamesError, isGamesLoading } = useAppData()
   const { filters, consoles, filteredGames, updateFilter, resetFilters } = useGameFilters(games)
+  const { expandedGame, sourceRect, handleExpand, handleClose } = useExpandedGameOverlay()
 
   const activeCardFields = useMemo(() => {
     const fields = new Set()
@@ -124,10 +127,18 @@ function Games() {
         <div className="games-grid">
           {gamesError && <p>{gamesError}</p>}
           {!gamesError && !isGamesLoading && filteredGames.map(game => (
-            <GameCard key={game.id} game={game} activeFields={activeCardFields} />
+            <GameCard key={game.id} game={game} activeFields={activeCardFields} onExpand={handleExpand} />
           ))}
         </div>
       </div>
+
+      {expandedGame && (
+        <GameCardExpanded
+          game={expandedGame}
+          sourceRect={sourceRect}
+          onClose={handleClose}
+        />
+      )}
     </main>
   )
 }

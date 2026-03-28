@@ -1,7 +1,10 @@
 import './GameCard.css'
 import { formatPrice } from '../utils/formatters'
 
-function GameCard({ game, activeFields = new Set() }) {
+function GameCard({ game, activeFields = new Set(), onExpand }) {
+  const handleClick = (e) => {
+    if (onExpand) onExpand(game, e.currentTarget.getBoundingClientRect())
+  }
   const showPrice = activeFields.has('price')
   const showRating = activeFields.has('rating')
   const showDate = activeFields.has('date')
@@ -9,7 +12,7 @@ function GameCard({ game, activeFields = new Set() }) {
   const showConsoles = activeFields.has('consoles')
 
   return (
-    <article className="game-card">
+    <article className="game-card" onClick={handleClick}>
       <img
         src={game.image}
         alt={game.title}

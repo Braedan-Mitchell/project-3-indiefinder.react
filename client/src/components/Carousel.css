@@ -17,6 +17,12 @@
   display: grid;
   gap: 1rem;
   padding: 1.1rem;
+  cursor: pointer;
+  transition: transform 180ms ease;
+}
+
+.carousel__slide:hover {
+  transform: translateY(-3px);
 }
 
 .carousel__image-wrap {
