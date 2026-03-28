@@ -1,4 +1,4 @@
-# Project 2: Indiefinder- A fast way to find and support indie video games!
+# Project 3: Indiefinder- A fast way to find and support indie video games!
 
 ## Summary
 Indiefinder is a website that is made to help indie video games get found and supported by people who want something new and fresh in the gaming industry. By creating a library of games that people can seach through, people can easily find new games made by smaller creators or teams. To make it even more unique, each page for a specific game will show you:
